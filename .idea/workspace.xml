@@ -26,7 +26,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../seminar-915-Neamtiu-Zaris/seminar_6" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -34,7 +35,29 @@
       <recent name="C:\Users\zneam\OneDrive\Documents\GitHub\a678-915-Neamtiu-Zaris\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.validators">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="activity_service" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="a678-915-Neamtiu-Zaris" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/service" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/service/activity_service.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="entity" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="a678-915-Neamtiu-Zaris" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -49,6 +72,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/domain/entity.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="a678-915-Neamtiu-Zaris" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -81,8 +126,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.validators" />
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.activity_service" />
         <item itemvalue="Python.entity" />
+        <item itemvalue="Python.validators" />
       </list>
     </recent_temporary>
   </component>
@@ -95,6 +142,10 @@
       <option name="presentableId" value="Default" />
       <updated>1605007654658</updated>
       <workItem from="1605007655719" duration="8267000" />
+      <workItem from="1605107908849" duration="8330000" />
+      <workItem from="1605348955243" duration="5261000" />
+      <workItem from="1605357298348" duration="4966000" />
+      <workItem from="1605439369967" duration="9979000" />
     </task>
     <servers />
   </component>
@@ -106,33 +157,39 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1605011007027" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1605015161263">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1605351815600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605015161263" />
-    <state width="1877" height="163" key="GridCell.Tab.0.bottom" timestamp="1605016570386">
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605351815600" />
+    <state width="636" height="602" key="GridCell.Tab.0.bottom" timestamp="1605449837855">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="163" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605016570386" />
-    <state width="1877" height="163" key="GridCell.Tab.0.center" timestamp="1605016570386">
+    <state width="636" height="602" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605449837855" />
+    <state width="636" height="602" key="GridCell.Tab.0.center" timestamp="1605449837855">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="163" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605016570386" />
-    <state width="1877" height="163" key="GridCell.Tab.0.left" timestamp="1605016570386">
+    <state width="636" height="602" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605449837855" />
+    <state width="636" height="602" key="GridCell.Tab.0.left" timestamp="1605449837855">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="163" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605016570386" />
-    <state width="1877" height="163" key="GridCell.Tab.0.right" timestamp="1605016570386">
+    <state width="636" height="602" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605449837855" />
+    <state width="636" height="602" key="GridCell.Tab.0.right" timestamp="1605449837855">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="163" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605016570386" />
+    <state width="636" height="602" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605449837855" />
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605362074664">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605362074664" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1605008726140">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605008726140" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/a678_915_Neamtiu_Zaris$entity.coverage" NAME="entity Coverage Results" MODIFIED="1605011654478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/domain" />
+    <SUITE FILE_PATH="coverage/a678_915_Neamtiu_Zaris$main.coverage" NAME="main Coverage Results" MODIFIED="1605449837850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/a678_915_Neamtiu_Zaris$activity_service.coverage" NAME="activity_service Coverage Results" MODIFIED="1605349263159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/service" />
+    <SUITE FILE_PATH="coverage/a678_915_Neamtiu_Zaris$entity.coverage" NAME="entity Coverage Results" MODIFIED="1605111145272" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/domain" />
     <SUITE FILE_PATH="coverage/a678_915_Neamtiu_Zaris$validators.coverage" NAME="validators Coverage Results" MODIFIED="1605014851241" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/domain" />
   </component>
 </project>

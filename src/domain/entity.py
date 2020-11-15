@@ -16,7 +16,7 @@ class Person:
     identification = itertools.count(1)
     #
 
-    def __init__(self, name, phone_number="unknown"):
+    def __init__(self, name, phone_number):
         self.__name = name
         self.__phone_number = phone_number
         self.__id = next(self.identification)
@@ -43,6 +43,10 @@ class Person:
     def phone_number(self, phone_number):
         self.__phone_number = phone_number
 
+    @id.setter
+    def id(self, id):
+        self.__id = id
+
     # To str overload
 
     def __str__(self) -> str:
@@ -59,16 +63,22 @@ class Activity:
     #
 
     # List of person id's (contains the list of persons that perform the activity)
-    __li_persons = []
+    # __li_persons = []
 
     def __init__(self, person_id, date, time, description):
+        # self.__li_persons = []
         self.__id = next(self.identification)
-        self.__li_persons.append(person_id)
+
+        self.__li_persons = person_id
         self.__date = date
         self.__time = time
         self.__description = description
 
     # Getters, setters
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def person_id_list(self):
@@ -98,6 +108,10 @@ class Activity:
     def description(self, description):
         self.__description = description
 
+    @id.setter
+    def id(self, id):
+        self.__id = id
+
     # To str overload
 
     def __str__(self) -> str:
@@ -109,6 +123,6 @@ class Activity:
 # p2 = Person("Ovidiu Zaris Neamtiu")
 # print(p1.id)
 # print(p2)
-a1 = Activity(1, "10/11/2020", "16:00", "Golf")
-print(a1)
+# a1 = Activity(1, "10/11/2020", "16:00", "Golf")
+# print(a1)
 

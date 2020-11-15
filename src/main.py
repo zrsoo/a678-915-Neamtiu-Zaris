@@ -38,3 +38,38 @@ Create an application to:
  Program can be started with either UI,
  without changes to source code.
 """
+
+
+# Start
+
+# Imports
+import traceback
+
+from domain.validators import PersonValidator, ActivityValidator
+from repository.inmemoryrepo import Repository
+from service.activity_service import ActivityService
+from service.person_service import PersonService
+from tests.tests import Test
+from ui.console import Console
+#
+
+
+if __name__ == "__main__":
+
+    test = Test()
+    test.run_tests()
+
+    try:
+        person_validator = PersonValidator()
+        person_repository = Repository()
+        person_service = PersonService(person_validator, person_repository)
+
+        activity_repository = Repository()
+        activity_validator = ActivityValidator()
+        activity_service = ActivityService(activity_validator, activity_repository, person_service)
+
+        console = Console(person_service, activity_service)
+        console.run_console()
+    except Exception as ex:
+        print("Error, " + str(ex))
+        traceback.print_exc()
