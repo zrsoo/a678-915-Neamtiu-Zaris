@@ -1,9 +1,14 @@
 """
 ### For week 8 (25% of grade)
-- Implement features 1 and 2
-- Have at least 10 procedurally generated items in your application at startup
-- Provide specification and tests for all non-UI classes and methods for the first functionality
-- Implement and use your own exception classes.
+- Implement features 1 and 2 -> DONE
+- Have at least 10 procedurally generated items in your application at startup -> DONE
+- Provide specification and tests for all non-UI classes and methods for the first functionality -> DONE
+- Implement and use your own exception classes. -> DONE
+
+
+### For week 9 (25% of grade)
+- Implement features 3 and 4.
+- Implement PyUnit test cases. -> DONE
 
 
 ### 5. Activity Planner
@@ -20,7 +25,7 @@ Create an application to:
     for using date/time or description. The search must work using case-insensitive, partial string matching,
     and must return all matching items.
 4. Create statistics:
-    - Activities for domain given date. List the activities for domain given date, in the order of their start time.
+    - Activities for a given date. List the activities for a given date, in the order of their start time.
     - Busiest days. This will provide the list of upcoming dates with activities, sorted in descending order of the
     free time in that day (all intervals with no activities).
     - Activities with domain given person. List all upcoming activities to which domain given person will participate.
@@ -49,23 +54,23 @@ from domain.validators import PersonValidator, ActivityValidator
 from repository.inmemoryrepo import Repository
 from service.activity_service import ActivityService
 from service.person_service import PersonService
-from tests.tests import Test
 from ui.console import Console
 #
 
 
 if __name__ == "__main__":
 
-    test = Test()
-    test.run_tests()
+    # test = Test()
+    # test.run_tests()
 
     try:
         person_validator = PersonValidator()
         person_repository = Repository()
-        person_service = PersonService(person_validator, person_repository)
 
         activity_repository = Repository()
         activity_validator = ActivityValidator()
+
+        person_service = PersonService(person_validator, person_repository, activity_repository)
         activity_service = ActivityService(activity_validator, activity_repository, person_service)
 
         console = Console(person_service, activity_service)

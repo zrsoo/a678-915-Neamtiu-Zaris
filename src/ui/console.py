@@ -64,14 +64,17 @@ class Console:
                         self.print_all_activities()
                 elif li_words[0] == "remove":
                     if li_words[1] == "person":
-                        self.__person_service.delete_person(int(li_words[2]))
+                        li_activities_to_be_removed = self.__person_service.delete_person(int(li_words[2]))
+                        # print(li_activities_to_be_removed)
+                        for activity_id in li_activities_to_be_removed:
+                            self.__activity_service.delete_activity(activity_id)
                     elif li_words[1] == "activity":
                         self.__activity_service.delete_activity(int(li_words[2]))
                 elif li_words[0] == "update":
                     if li_words[1] == "person":
-                        id_person = li_words[2]
+                        id_person = int(li_words[2])
                         li_info = self.format_person_update(user_command)
-                        print(li_info)
+                        # print(li_info)
                         new_name, new_phone_number = li_info
                         self.__person_service.update_person(id_person, new_name, new_phone_number)
                     elif li_words[1] == "activity":
@@ -82,6 +85,29 @@ class Console:
                         new_description = li_words[6]
                         self.__activity_service.update_activity(id_activity, new_person_id, new_date, new_time,
                                                                 new_description)
+                elif li_words[0] == "search":
+                    if li_words[1] == "person":
+                        if li_words[2] == "name":
+                            name = input("Please type the name that you want to search by: ")
+                            self.print_by_name(name)
+                        elif li_words[2] == "pnumber":
+                            phone_number = input("Please type the phone number that you want to search by: ")
+                            self.print_by_phone_number(phone_number)
+                    elif li_words[1] == "activity":
+                        if li_words[2] == "date/time":
+                            date = input("Please type the date that you want to search by: ")
+                            time = input("Please type the time that you want to search by: ")
+                            self.print_by_date_time(date, time)
+                        elif li_words[2] == "description":
+                            description = input("Please type the description that you want to search by: ")
+                            self.print_by_description(description)
+                elif li_words[0] == "filter" and li_words[1] == "activities":
+                    if li_words[2] == "date":
+                        date = input("Please type the date that you want to filter by: ")
+                        self.print_by_date(date)
+                    if li_words[2] == "person":
+                        person_id = input("Please type the id of the person that you want to filter by: ")
+                        self.print_by_person(person_id)
                 else:
                     print("The command you have typed is of incorrect form.")
             except Exception as ex:
@@ -109,14 +135,26 @@ class Console:
         print("1.) " + blue + "add person *name* *phone number*" + default + " - Adds a person\n"
               "2.) " + blue + "remove person *id*" + default + " - Removes a person\n"
               "3.) " + blue + "update person *id* *new_name* *new_phone_number*" + default + " - Updates a person\n"
-              "4.) " + blue + "list persons" + default + " - Displays all persons\n"
-              "5.) " + blue + "add activity *[person_id's]*, *date*, *time*, *description*" + default + " - Adds"
+              "4.) " + blue + "search person name" + default +
+              " - Lists all persons with name containing *name*\n"
+              "5.) " + blue + "search person pnumber" + default + " -  Lists all person with the "
+                                                                                 "specified phone number\n"
+              "6.) " + blue + "list persons" + default + " - Displays all persons\n"
+              "7.) " + blue + "add activity *[person_id's]*, *date*, *time*, *description*" + default + " - Adds"
                                                                                                         " an activity\n"
-              "6.) " + blue + "remove activity *id*" + default + " - Removes an activity\n"
-              "7.) " + blue + "update activity *id* *[person_id's]* *date* *time* *description*"
+              "8.) " + blue + "remove activity *id*" + default + " - Removes an activity\n"
+              "9.) " + blue + "update activity *id* *[person_id's]* *date* *time* *description*"
               + default + " - ""Updates an activity\n"
-              "8.) " + blue + "list activities" + default + " - Displays all activities\n"
-              "9.) " + red + "exit" + default)
+              "10.) " + blue + "search activity date/time" + default + " - Lists all activities taking place at the"
+                                                                       "specified date and time.\n"
+              "11.) " + blue + "search activity description" + default + " - Lists all activities with the "
+                                                                         "specified description\n"
+              "12.) " + blue + "list activities" + default + " - Displays all activities\n"
+              "13.) " + blue + "filter activities date" + default + " - Displays all activities happening at a certain"
+                                                               " date, in order of their start time\n"
+              "14.) " + blue + "filter activities person" + default + " - Displays all activities that the person"
+                                                                      " with the specified id performs.\n"     
+              "" + red + "exit" + default)
 
     @staticmethod
     def format_input(input_str):
@@ -176,3 +214,33 @@ class Console:
             name = string[pos3 + 1:last_space_pos]
         li_info = [name, phone_number]
         return li_info
+
+    def print_by_name(self, name):
+        for person in self.__person_service.filter_by_name(name):
+            print(str(person))
+        print()
+
+    def print_by_phone_number(self, phone_number):
+        for person in self.__person_service.filter_by_phone_number(phone_number):
+            print(str(person))
+        print()
+
+    def print_by_date_time(self, date, time):
+        for activity in self.__activity_service.filter_by_date_time(date, time):
+            print(str(activity))
+        print()
+
+    def print_by_description(self, description):
+        for activity in self.__activity_service.filter_by_description(description):
+            print(str(activity))
+        print()
+
+    def print_by_date(self, date):
+        for activity in self.__activity_service.filter_by_date(date):
+            print(str(activity))
+        print()
+
+    def print_by_person(self, person_id):
+        for activity in self.__activity_service.filter_by_person(person_id):
+            print(str(activity))
+        print()

@@ -119,10 +119,15 @@ class Activity:
                + self.date + "; " + self.time + "; " + self.description
 
 
-# p1 = Person("Ovidiu Zaris Neamtiu", "0753429584")
-# p2 = Person("Ovidiu Zaris Neamtiu")
-# print(p1.id)
-# print(p2)
-# a1 = Activity(1, "10/11/2020", "16:00", "Golf")
-# print(a1)
+class Date:
+    def __init__(self, date, num_activities):
+        self.__date = date
+        self.__num_activities = num_activities
 
+    @property
+    def date(self):
+        return self.__date
+
+    @property
+    def num_activities(self):
+        return self.num_activities

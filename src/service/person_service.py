@@ -4,6 +4,7 @@
 
 # Imports
 from domain.entity import Person
+# from domain.validators import PersonValidator
 import random
 
 #
@@ -11,9 +12,10 @@ import random
 
 class PersonService:
 
-    def __init__(self, validator, person_repository):
+    def __init__(self, validator, person_repository, activity_repository):
         self.__validator = validator
         self.__person_repository = person_repository
+        self.__activity_repository = activity_repository
 
     def add_person(self, name, phone_number="unknown"):
         """
@@ -34,6 +36,15 @@ class PersonService:
         """
         self.__person_repository.delete_by_id(person_id)
 
+        li_activities_to_be_removed = []
+        li_activities = self.__activity_repository.find_all()
+        for activity in li_activities:
+            if person_id in activity.person_id_list:
+                activity.person_id_list.remove(person_id)
+                if len(activity.person_id_list) == 0:
+                    li_activities_to_be_removed.append(activity.id)
+        return li_activities_to_be_removed
+
     def update_person(self, person_id, name, phone_number="unkown"):
         """
         Updates the values of the person situated at "person_id" with the values of "person_update"
@@ -44,6 +55,7 @@ class PersonService:
         """
         person_update = Person(name, phone_number)
         person_update.id = person_id
+        self.__validator.validate(person_update)
         self.__person_repository.update(person_id, person_update)
 
     def get_all_persons(self):
@@ -74,3 +86,9 @@ class PersonService:
             list_phone_numbers.pop(phone_number_index)
             minus = minus + 1
             times = times - 1
+
+    def filter_by_name(self, name):
+        return [person for person in self.get_all_persons() if name in person.name.lower()]
+
+    def filter_by_phone_number(self, phone_number):
+        return [person for person in self.get_all_persons() if phone_number == person.phone_number]
