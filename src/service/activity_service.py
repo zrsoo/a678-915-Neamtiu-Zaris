@@ -123,20 +123,19 @@ class ActivityService:
         list_persons = self.__person_service.get_all_persons()
         list_ids = [person.id for person in list_persons]
         length_ids = len(list_ids)
-        id_index = random.randint(0, length_ids - 1)
         #
         # Getting descriptions
         li_description = ["Footbal", "Golf", "Swimming", "Running", "Writing", "Reading",
                           "Biking", "Driving", "Exercising", "Walking"]
         #
 
-        # Generating date
-        day = random.randint(1, 28)
-        month = random.randint(1, 12)
-        year = random.randint(1850, 2020)
-        string_date = str(day) + '/' + str(month) + '/' + str(year)
+        # # Generating date
+        # day = random.randint(1, 28)
+        # month = random.randint(1, 12)
+        # year = random.randint(1850, 2020)
+        # string_date = str(day) + '/' + str(month) + '/' + str(year)
 
-        times = 5
+        times = 10
         while times > 0:
             # Generating id
             id_index = random.randint(0, length_ids - 1)
@@ -144,14 +143,16 @@ class ActivityService:
             #
             # Generating time
             hour = random.randint(1, 23)
-            minute = random.randint(1, 59)
-            string_time = str(hour) + ':' + str(minute)
+            minute = random.randint(1, 58)
+            hour2 = random.randint(hour, 23)
+            minute2 = random.randint(minute + 1, 59)
+            string_time = str(hour) + ':' + str(minute) + '-' + str(hour2) + ':' + str(minute2)
             #
-            # # Generating date
-            # day = random.randint(1, 28)
-            # month = random.randint(1, 12)
-            # year = random.randint(1850, 2020)
-            # string_date = str(day) + '/' + str(month) + '/' + str(year)
+            # Generating date
+            day = random.randint(1, 28)
+            month = random.randint(1, 12)
+            year = random.randint(1850, 2020)
+            string_date = str(day) + '/' + str(month) + '/' + str(year)
             # Generating description
             index_description = random.randint(0, 9)
 
@@ -162,10 +163,14 @@ class ActivityService:
                 print("Error, " + str(ex))
 
     def filter_by_date_time(self, date, time):
-        return [activity for activity in self.get_all_activities() if activity.date == date and time in activity.time]
+        # return [activity for activity in self.get_all_activities() if activity.date == date and time in activity.time]
+        # print(self.time_in_interval(date, time))
+        return [activity for activity in self.get_all_activities() if activity.date == date
+                and self.time_in_interval(time, activity.time)]
 
     def filter_by_description(self, description):
-        return [activity for activity in self.get_all_activities() if activity.description == description]
+        return [activity for activity in self.get_all_activities()
+                if activity.description.lower() == description.lower()]
 
     def filter_by_date(self, date):
         li_activities = [activity for activity in self.get_all_activities() if activity.date == date]
@@ -174,7 +179,8 @@ class ActivityService:
 
     @staticmethod
     def my_key(activity):
-        li_words = [int(word) for word in activity.time.split(':')]
+        string_time = activity.time.split('-')
+        li_words = [int(word) for word in string_time[0].split(':')]
         return li_words
 
     def filter_by_person(self, person_id):
@@ -196,7 +202,7 @@ class ActivityService:
             num_activities = 0
             for activity in li_activities:
                 if activity.date == date:
-                    num_activities += 1
+                    num_activities = self.interval_duration(activity.time)
             date_dict[date] = num_activities
 
         sorted_dict = sorted(date_dict.items(), key=lambda item: item[1])
@@ -212,3 +218,45 @@ class ActivityService:
         li_dates = [activity.date for activity in li_activities]
         li_dates = list(dict.fromkeys(li_dates))  # Removing duplicates
         return li_dates
+
+    @staticmethod
+    def interval_duration(interval):
+        """
+        Returns the number of minutes contained in an interval of the form "11:10-23:15"
+        :param interval: the interval
+        :return: the nr of minutes
+        """
+        # 11:10-23:14
+        start, end = interval.split('-')  # start = 11:10, end = 23:14
+        start_hour, start_minute = [int(word) for word in start.split(':')]
+        end_hour, end_minute = [int(word) for word in end.split(':')]
+
+        # print(start_hour, start_minute)
+        # print(end_hour, end_minute)
+        return (end_hour-start_hour) * 60 + end_minute - start_minute
+
+    @staticmethod
+    def time_in_interval(time, interval):
+        """
+        Checks if a certain time is included within a time interval of the form "11:11-22:22"
+        :param time: the time to be checked
+        :param interval: the interval
+        :return: True if it is included, False otherwise
+        """
+        # 11:20 <-> 10:10-15:40
+        # 11:20 <-> 11:20-20:40
+        # 11:20 <-> 10:10-11:20
+        # 11:20 <-> 11:19-11:21
+
+        li_time = [int(word) for word in time.split(':')]  # li_time[0] = 11, li_time[1] = 20
+
+        li_interval = interval.split('-')  # li_interval[0] = 10:10, li_interval[1] = 15:40
+        li_start = [int(word) for word in li_interval[0].split(':')]  # li_start[0] = 10, li_start[1] = 10
+        li_end = [int(word) for word in li_interval[1].split(':')]  # li_end[0] = 15, li_end[1] = 40
+
+        if li_start <= li_time <= li_end:
+            return True
+
+        return False
+
+#  TODO list busiest days

@@ -4,9 +4,8 @@
 
 # Imports
 from domain.entity import Person
-# from domain.validators import PersonValidator
 import random
-
+import string
 #
 
 
@@ -73,17 +72,17 @@ class PersonService:
         list_names = ["Ion Pop Glanetasu", "Apolodor", "Kaz Brekker", "Cahir Aep Ceallach",
                       "Dinu Paturica", "Francesca Findabair", "Triss Merigold", "Dijkstra",
                       "Ragnar Lothbrok", "Obi-Wan Kenobi"]
-        list_phone_numbers = ["unknown", "+40257936226", "+40257456245", "+40257474812",
-                              "+48425456245", "+40257452893", "+40257456762", "+4027816952",
-                              "+40257461458", "+40257821654"]
+        list_phone_numbers = ["unknown", "40257936226", "40257456245", "40257474812",
+                              "48425456245", "40257452893", "40257456762", "4027816952",
+                              "40257461458", "40257821654"]
         times = 5
         minus = 0
         while times > 0:
             name_index = random.randint(0, 9 - minus)
-            phone_number_index = random.randint(0, 9 - minus)
-            self.add_person(list_names[name_index], list_phone_numbers[phone_number_index])
+            digits = string.digits
+            phone_number = ''.join(random.choice(digits) for i in range(10))
+            self.add_person(list_names[name_index], phone_number)
             list_names.pop(name_index)
-            list_phone_numbers.pop(phone_number_index)
             minus = minus + 1
             times = times - 1
 
@@ -91,4 +90,4 @@ class PersonService:
         return [person for person in self.get_all_persons() if name in person.name.lower()]
 
     def filter_by_phone_number(self, phone_number):
-        return [person for person in self.get_all_persons() if phone_number == person.phone_number]
+        return [person for person in self.get_all_persons() if phone_number in person.phone_number]

@@ -10,7 +10,7 @@ import re
 #
 
 # Font formatting
-
+import traceback
 
 underline = '\u001b[4m'
 default = '\u001b[0m'
@@ -33,6 +33,7 @@ class Console:
             self.__activity_service.generate_activities()
         except Exception as ex:
             print("Error, " + str(ex))
+            traceback.print_exc()
 
         while True:
             try:
@@ -63,8 +64,8 @@ class Console:
                     elif li_words[1] == "activities":
                         self.print_all_activities()
                     elif li_words[1] == "busiest" and li_words[2] == "days":
-                        dict_days = self.__activity_service.create_date_dict()
-                        print(dict_days)
+                        list_days = self.__activity_service.create_date_dict()
+                        self.print_busiest_days(list_days)
                 elif li_words[0] == "remove":
                     if li_words[1] == "person":
                         li_activities_to_be_removed = self.__person_service.delete_person(int(li_words[2]))
@@ -153,11 +154,13 @@ class Console:
               "11.) " + blue + "search activity description" + default + " - Lists all activities with the "
                                                                          "specified description\n"
               "12.) " + blue + "list activities" + default + " - Displays all activities\n"
-              "13.) " + blue + "filter activities date" + default + " - Displays all activities happening at a certain"
+              "13.) " + blue + "list busiest days" + default + " - Displays all the days that contain at least one"
+                                                               "activity, in ascending order of their busy time.\n"
+              "14.) " + blue + "filter activities date" + default + " - Displays all activities happening at a certain"
                                                                " date, in order of their start time\n"
-              "14.) " + blue + "filter activities person" + default + " - Displays all activities that the person"
+              "15.) " + blue + "filter activities person" + default + " - Displays all activities that the person"
                                                                       " with the specified id performs.\n"     
-              "" + red + "exit" + default)
+              "16.) " + red + "exit" + default)
 
     @staticmethod
     def format_input(input_str):
@@ -205,18 +208,20 @@ class Console:
         :return: A list containing the name on the first position, and the phone number
         on the second one (if it is specified).
         """
-        last_space_pos = string.rfind(' ')
-        phone_number = string[last_space_pos + 1:]
         pos1 = string.find(' ')
         pos2 = string.find(' ', pos1 + 1)
         pos3 = string.find(' ', pos2 + 1)
-        if last_space_pos == pos3:
-            name = string[pos3+1:]
-            phone_number = "unknown"
-        else:
-            name = string[pos3 + 1:last_space_pos]
-        li_info = [name, phone_number]
-        return li_info
+        string_input = string[pos3+1:]
+        li_input = string_input.split()
+        name = ''
+        phone_number = ''
+        for word in li_input:
+            if not word.isdigit():
+                name = name + ' ' + ''.join(word)
+            else:
+                phone_number = ''.join(word)
+        name = name[1:]
+        return [name, phone_number]
 
     def print_by_name(self, name):
         for person in self.__person_service.filter_by_name(name):
@@ -247,3 +252,9 @@ class Console:
         for activity in self.__activity_service.filter_by_person(person_id):
             print(str(activity))
         print()
+
+    @staticmethod
+    def print_busiest_days(list_days):
+        print(green + "The list of days sorted by free time (in descending order) is as follows:" + default)
+        for day in list_days:
+            print("Date: " + day[0] + "; Busy time: " + str(day[1]) + " minutes")

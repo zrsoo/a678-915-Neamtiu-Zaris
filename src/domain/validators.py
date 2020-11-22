@@ -46,19 +46,11 @@ class PersonValidator:
         :param string: The string containing the name
         :return:
         """
-        string_upper = string
-        # Capitalizing the first character (if it's not already capitalized).
-        if string[0].islower():
-            string_upper = string.replace(string[0], string[0].upper())
-            string = string_upper
-
-        # Capitalizing the rest of the characters (if they are not already capitalized).
-        for index in range(1, len(string)):
-            if string[index].islower() and string[index - 1] == " ":
-                string_upper = string.replace(string[index], string[index].upper())
-                string = string_upper
-
-        # print(string_upper)
+        li_words = string.split()
+        li_words = [word.replace(word[0], word[0].upper(), 1) for word in li_words]
+        string_upper = ''
+        string_upper = string_upper + ''.join(' ' + word for word in li_words)
+        string_upper = string_upper[1:]
         return string_upper
 
     #
