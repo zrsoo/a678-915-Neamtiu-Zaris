@@ -6,7 +6,16 @@
 from domain.entity import Person
 import random
 import string
+
+
 #
+
+class StoreException(Exception):
+    pass
+
+
+class PersonServiceException(StoreException):
+    pass
 
 
 class PersonService:
@@ -33,6 +42,9 @@ class PersonService:
         :param person_id: the person's id
         :return:
         """
+        if not self.person_exists(person_id):
+            raise PersonServiceException("The person that you are trying to remove does not exist.")
+
         self.__person_repository.delete_by_id(person_id)
 
         li_activities_to_be_removed = []
@@ -52,6 +64,9 @@ class PersonService:
         :param person_id: the id of the person that is going to be updated
         :return:
         """
+        if not self.person_exists(person_id):
+            raise PersonServiceException("The person that you are trying to update does not exist.")
+
         person_update = Person(name, phone_number)
         person_update.id = person_id
         self.__validator.validate(person_update)
@@ -87,7 +102,17 @@ class PersonService:
             times = times - 1
 
     def filter_by_name(self, name):
-        return [person for person in self.get_all_persons() if name in person.name.lower()]
+        return [person for person in self.get_all_persons() if name.lower() in person.name.lower()]
 
     def filter_by_phone_number(self, phone_number):
         return [person for person in self.get_all_persons() if phone_number in person.phone_number]
+
+    def person_exists(self, person_id):
+        """
+        Checks if the person id that is assigned to the activity exists in the person repository.
+        :param person_id: the id that is checked
+        :return: true if the person exists, false otherwise
+        """
+        li_persons = self.__person_repository.find_all()
+        # print(person_from_list for person_from_list in li_persons)
+        return any(person_id == person_from_list.id for person_from_list in li_persons)

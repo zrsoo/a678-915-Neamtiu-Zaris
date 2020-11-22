@@ -49,7 +49,6 @@ Create an application to:
 
 # Imports
 import traceback
-
 from domain.validators import PersonValidator, ActivityValidator
 from repository.inmemoryrepo import Repository
 from service.activity_service import ActivityService
