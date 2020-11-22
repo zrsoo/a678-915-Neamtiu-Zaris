@@ -45,7 +45,7 @@ class PersonService:
                     li_activities_to_be_removed.append(activity.id)
         return li_activities_to_be_removed
 
-    def update_person(self, person_id, name, phone_number="unkown"):
+    def update_person(self, person_id, name, phone_number="unknown"):
         """
         Updates the values of the person situated at "person_id" with the values of "person_update"
         :param phone_number: the new phone number

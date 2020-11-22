@@ -93,10 +93,8 @@ class ActivityValidator:
                 raise ActivityValidatorException("Date is of incorrect form.")
 
         for char in activity.time:
-            if not char.isdigit() and not char == ':':
+            if not char.isdigit() and not char in '-:':
                 raise ActivityValidatorException("Time is of incorrect form.")
-
-        # TODO check if date and time are correct
 
 # string1 = "ovidiu zaris neamtiu"
 # string2 = "ov1diu zaris neamtiu"

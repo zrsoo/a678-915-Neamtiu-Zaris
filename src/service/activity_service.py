@@ -114,7 +114,7 @@ class ActivityService:
     def activity_exists(self, activity_id):
         li_activities = self.get_all_activities()
         for activity in li_activities:
-            if activity_id == activity.id:
+            if int(activity_id) == activity.id:
                 return True
         return False
 
@@ -130,6 +130,12 @@ class ActivityService:
                           "Biking", "Driving", "Exercising", "Walking"]
         #
 
+        # Generating date
+        day = random.randint(1, 28)
+        month = random.randint(1, 12)
+        year = random.randint(1850, 2020)
+        string_date = str(day) + '/' + str(month) + '/' + str(year)
+
         times = 5
         while times > 0:
             # Generating id
@@ -141,11 +147,11 @@ class ActivityService:
             minute = random.randint(1, 59)
             string_time = str(hour) + ':' + str(minute)
             #
-            # Generating date
-            day = random.randint(1, 28)
-            month = random.randint(1, 12)
-            year = random.randint(1850, 2020)
-            string_date = str(day) + '/' + str(month) + '/' + str(year)
+            # # Generating date
+            # day = random.randint(1, 28)
+            # month = random.randint(1, 12)
+            # year = random.randint(1850, 2020)
+            # string_date = str(day) + '/' + str(month) + '/' + str(year)
             # Generating description
             index_description = random.randint(0, 9)
 
@@ -156,7 +162,7 @@ class ActivityService:
                 print("Error, " + str(ex))
 
     def filter_by_date_time(self, date, time):
-        return [activity for activity in self.get_all_activities() if activity.date == date and activity.time == time]
+        return [activity for activity in self.get_all_activities() if activity.date == date and time in activity.time]
 
     def filter_by_description(self, description):
         return [activity for activity in self.get_all_activities() if activity.description == description]
@@ -192,10 +198,10 @@ class ActivityService:
                 if activity.date == date:
                     num_activities += 1
             date_dict[date] = num_activities
-        # TODO sort the dictionary by num_activities
-        # sorted_dict = sorted(date_dict.items(), key=)
 
-        return date_dict
+        sorted_dict = sorted(date_dict.items(), key=lambda item: item[1])
+
+        return sorted_dict
 
     def create_date_list(self):
         """

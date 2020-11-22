@@ -62,6 +62,9 @@ class Console:
                         self.print_all_persons()
                     elif li_words[1] == "activities":
                         self.print_all_activities()
+                    elif li_words[1] == "busiest" and li_words[2] == "days":
+                        dict_days = self.__activity_service.create_date_dict()
+                        print(dict_days)
                 elif li_words[0] == "remove":
                     if li_words[1] == "person":
                         li_activities_to_be_removed = self.__person_service.delete_person(int(li_words[2]))
