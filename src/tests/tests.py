@@ -99,6 +99,9 @@ class Test(unittest.TestCase):
     # Add functionality
     def test_add_activity(self):
         self.activity_service.add_activity([1, 2, 3], "1/1/1", "12:20-14:50", "Golf")
+        self.assertRaises(ActivityValidatorException, self.activity_service.add_activity, [1], "1/1/1",
+                          "13:20-16:00", "a")
+        self.activity_service.add_activity([1, 2, 3], "11/11/2011", "11:11-12:11", "asd")
         self.assertRaises(ActivityValidatorException, self.activity_service.add_activity,
                           [10], "11/11/2020", "18:13", "Golf")
         self.assertRaises(ActivityValidatorException, self.activity_service.add_activity,

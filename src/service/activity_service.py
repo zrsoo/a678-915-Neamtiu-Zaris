@@ -88,29 +88,20 @@ class ActivityService:
         """
         li_activities = self.get_all_activities()
         for activity in li_activities:
-            try:
-                # index = activity.person_id_list.index(person_id)
-                if date == activity.date and self.clashing_intervals(time, activity.time) \
-                        and person_id in activity.person_id_list:
-                    return True
-            except ValueError:
-                pass
+            if date == activity.date and self.clashing_intervals(time, activity.time) and person_id in activity.person_id_list:
+                return True
         return False
 
     def validate_activity(self, activity):
         # Checking if the persons performing the activities exist.
         for person_id in activity.person_id_list:
             if not self.person_exists(person_id):
-                raise ActivityValidatorException("The person with id " + str(person_id) +
-                                                 " that you are trying to assign "
-                                                 "to the activity with id " + str(activity.id) + " does not exist.")
+                raise ActivityValidatorException("The person with id " + str(person_id) + " that you are trying to assign ""to the activity with id " + str(activity.id) + " does not exist.")
 
         # Checking if the persons performing the activities are busy.
         for person_id in activity.person_id_list:
             if self.person_busy(person_id, activity.date, activity.time):
-                raise ActivityValidatorException("The person with id " + str(person_id) +
-                                                 " that you are trying to assign "
-                                                 "to the activity with id " + str(activity.id) + " is busy.")
+                raise ActivityValidatorException("The person with id " + str(person_id) + " that you are trying to assign ""to the activity with id " + str(activity.id) + " is busy.")
 
     def activity_exists(self, activity_id):
         li_activities = self.get_all_activities()
@@ -274,8 +265,7 @@ class ActivityService:
         li_interval1 = interval1.split('-')  # li_interval1[0] = 11:20, li_interval1[1] = 15:30
         li_interval2 = interval2.split('-')  # li_interval2[0] = 14:40, li_interval2[1] = 16:50
 
-        if self.time_in_interval(li_interval1[0], interval2) and li_interval1[0] != li_interval2[1] \
-                or self.time_in_interval(li_interval2[0], interval1) and li_interval2[0] != li_interval1[1]:
+        if self.time_in_interval(li_interval1[0], interval2) and li_interval1[0] != li_interval2[1] or self.time_in_interval(li_interval2[0], interval1) and li_interval2[0] != li_interval1[1]:
             return True
 
         return False
