@@ -85,17 +85,5 @@ class ActivityValidator:
                 raise ActivityValidatorException("Date is of incorrect form.")
 
         for char in activity.time:
-            if not char.isdigit() and not char in '-:':
+            if not char.isdigit() and char not in '-:':
                 raise ActivityValidatorException("Time is of incorrect form.")
-
-# string1 = "ovidiu zaris neamtiu"
-# string2 = "ov1diu zaris neamtiu"
-# string3 = "0755328329382632983"
-# string4 = "4324252b41232131"
-# validator = PersonValidator()
-# string1 = validator.capitalize(string1)
-# print(string1)
-# print(validator.has_numbers(string2))
-# print(validator.has_numbers(string1))
-# print(validator.has_letters(string3))
-# print(validator.has_letters(string4))

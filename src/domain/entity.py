@@ -119,15 +119,15 @@ class Activity:
                + self.date + "; " + self.time + "; " + self.description
 
 
-class Date:
-    def __init__(self, date, num_activities):
-        self.__date = date
-        self.__num_activities = num_activities
-
-    @property
-    def date(self):
-        return self.__date
-
-    @property
-    def num_activities(self):
-        return self.num_activities
+# class Date:
+#     def __init__(self, date, num_activities):
+#         self.__date = date
+#         self.__num_activities = num_activities
+#
+#     @property
+#     def date(self):
+#         return self.__date
+#
+#     @property
+#     def num_activities(self):
+#         return self.num_activities

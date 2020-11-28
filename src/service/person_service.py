@@ -87,9 +87,7 @@ class PersonService:
         list_names = ["Ion Pop Glanetasu", "Apolodor", "Kaz Brekker", "Cahir Aep Ceallach",
                       "Dinu Paturica", "Francesca Findabair", "Triss Merigold", "Dijkstra",
                       "Ragnar Lothbrok", "Obi-Wan Kenobi"]
-        list_phone_numbers = ["unknown", "40257936226", "40257456245", "40257474812",
-                              "48425456245", "40257452893", "40257456762", "4027816952",
-                              "40257461458", "40257821654"]
+
         times = 5
         minus = 0
         while times > 0:

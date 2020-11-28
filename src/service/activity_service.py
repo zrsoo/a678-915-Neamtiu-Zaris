@@ -90,7 +90,8 @@ class ActivityService:
         for activity in li_activities:
             try:
                 # index = activity.person_id_list.index(person_id)
-                if date == activity.date and time == activity.time and person_id in activity.person_id_list:
+                if date == activity.date and self.clashing_intervals(time, activity.time) \
+                        and person_id in activity.person_id_list:
                     return True
             except ValueError:
                 pass
@@ -188,7 +189,7 @@ class ActivityService:
                          int(person_id) in activity.person_id_list]
         return li_activities
 
-    def create_date_dict(self):
+    def create_busiest_days_list(self):
         """
         Creates a dictionary of the type [date]=num_activities, where num_activities = the number
                                                         of activities taking place at a certain date
@@ -205,9 +206,9 @@ class ActivityService:
                     num_activities = self.interval_duration(activity.time)
             date_dict[date] = num_activities
 
-        sorted_dict = sorted(date_dict.items(), key=lambda item: item[1])
+        sorted_list = sorted(date_dict.items(), key=lambda item: item[1])
 
-        return sorted_dict
+        return sorted_list
 
     def create_date_list(self):
         """
@@ -233,7 +234,7 @@ class ActivityService:
 
         # print(start_hour, start_minute)
         # print(end_hour, end_minute)
-        return (end_hour-start_hour) * 60 + end_minute - start_minute
+        return (end_hour - start_hour) * 60 + end_minute - start_minute
 
     @staticmethod
     def time_in_interval(time, interval):
@@ -259,4 +260,22 @@ class ActivityService:
 
         return False
 
-#  TODO list busiest days
+    def clashing_intervals(self, interval1, interval2):
+        """
+        Checks if two time intervals have any common period of time.
+        :param interval1:
+        :param interval2:
+        :return: True if they "intersect", false otherwise.
+        """
+
+        # interval1 : 11:20-15:30       10:10-20:20
+        # interval2 : 14:40-16:50       14:40-15:30
+
+        li_interval1 = interval1.split('-')  # li_interval1[0] = 11:20, li_interval1[1] = 15:30
+        li_interval2 = interval2.split('-')  # li_interval2[0] = 14:40, li_interval2[1] = 16:50
+
+        if self.time_in_interval(li_interval1[0], interval2) and li_interval1[0] != li_interval2[1] \
+                or self.time_in_interval(li_interval2[0], interval1) and li_interval2[0] != li_interval1[1]:
+            return True
+
+        return False
