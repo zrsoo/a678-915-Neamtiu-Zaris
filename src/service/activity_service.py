@@ -30,6 +30,12 @@ class ActivityService:
         self.__validator.validate(a)
         self.validate_activity(a)
         self.__activity_repository.save(a)
+        return a.id
+
+    def add_activity_entity(self, a):
+        self.__validator.validate(a)
+        self.validate_activity(a)
+        self.__activity_repository.save(a)
 
     def delete_activity(self, activity_id):
         """
@@ -37,7 +43,13 @@ class ActivityService:
         :param activity_id: the id of the activity that is to be deleted
         :return:
         """
+        if not self.activity_exists(activity_id):
+            raise ActivityValidatorException("The activity that you are trying to delete does not exist.")
+
+        activity = self.__activity_repository.find_by_id(activity_id)
+
         self.__activity_repository.delete_by_id(activity_id)
+        return activity
 
     def update_activity(self, activity_id, person_id, date, time, description):
         """
@@ -55,8 +67,9 @@ class ActivityService:
         activity_update = Activity(person_id, date, time, description)
         activity_update.id = int(activity_id)
         self.__validator.validate(activity_update)
-        self.validate_activity(activity_update)
+        activity = self.__activity_repository.find_by_id(activity_id)
         self.__activity_repository.update(activity_id, activity_update)
+        return activity
 
     def get_all_activities(self):
         """

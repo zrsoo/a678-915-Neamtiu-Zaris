@@ -6,9 +6,11 @@
 from domain.entity import Person
 import random
 import string
+import copy
 
 
 #
+
 
 class StoreException(Exception):
     pass
@@ -35,6 +37,11 @@ class PersonService:
         p = Person(name, phone_number)
         self.__validator.validate(p)
         self.__person_repository.save(p)
+        return p.id
+
+    def add_person_entity(self, p):
+        self.__validator.validate(p)
+        self.__person_repository.save(p)
 
     def delete_person(self, person_id):
         """
@@ -44,17 +51,27 @@ class PersonService:
         """
         if not self.person_exists(person_id):
             raise PersonServiceException("The person that you are trying to remove does not exist.")
-
+        person = self.__person_repository.find_by_id(person_id)
         self.__person_repository.delete_by_id(person_id)
 
         li_activities_to_be_removed = []
+        li_affected_activities = []
         li_activities = self.__activity_repository.find_all()
+
         for activity in li_activities:
             if person_id in activity.person_id_list:
+                activity_copy = copy.deepcopy(activity)
+                li_affected_activities.append(activity_copy)
                 activity.person_id_list.remove(person_id)
                 if len(activity.person_id_list) == 0:
-                    li_activities_to_be_removed.append(activity.id)
-        return li_activities_to_be_removed
+                    li_activities_to_be_removed.append(activity_copy)
+
+        li_info = [li_activities_to_be_removed, li_affected_activities, person]
+
+        for activity in li_activities_to_be_removed:
+            self.__activity_repository.delete_by_id(activity.id)
+
+        return li_info
 
     def update_person(self, person_id, name, phone_number="unknown"):
         """
@@ -114,3 +131,6 @@ class PersonService:
         li_persons = self.__person_repository.find_all()
         # print(person_from_list for person_from_list in li_persons)
         return any(person_id == person_from_list.id for person_from_list in li_persons)
+
+    def filter_by_id(self, person_id):
+        return self.__person_repository.find_by_id(person_id)

@@ -6,11 +6,17 @@
     ui -> entity
 """
 # Imports
+
 import re
+import traceback
+
+from service.handlers import UndoHandler
+from service.undo import UndoManager
+
 #
 
+
 # Font formatting
-import traceback
 
 underline = '\u001b[4m'
 default = '\u001b[0m'
@@ -51,13 +57,15 @@ class Console:
                         else:
                             name = li_info
                             phone_number = "unknown"
-                        self.__person_service.add_person(name, phone_number)
+                        p_id = self.__person_service.add_person(name, phone_number)
+                        UndoManager.register_operation(self.__person_service, UndoHandler.ADD_PERSON, p_id)
                     if li_words[1] == "activity":
                         person_id = self.format_id_list(li_words[2])
                         date = li_words[3]
                         time = li_words[4]
                         description = li_words[5]
-                        self.__activity_service.add_activity(person_id, date, time, description)
+                        activity_id = self.__activity_service.add_activity(person_id, date, time, description)
+                        UndoManager.register_operation(self.__activity_service, UndoHandler.ADD_ACTIVITY, activity_id)
                 elif li_words[0] == "list":
                     if li_words[1] == "persons":
                         self.print_all_persons()
@@ -68,27 +76,30 @@ class Console:
                         self.print_busiest_days(list_days)
                 elif li_words[0] == "remove":
                     if li_words[1] == "person":
-                        li_activities_to_be_removed = self.__person_service.delete_person(int(li_words[2]))
-                        # print(li_activities_to_be_removed)
-                        for activity_id in li_activities_to_be_removed:
-                            self.__activity_service.delete_activity(activity_id)
+                        li_info = self.__person_service.delete_person(int(li_words[2]))
+                        UndoManager.register_operation(self.__person_service, UndoHandler.DELETE_PERSON,
+                                                       self.__activity_service, li_info)
                     elif li_words[1] == "activity":
-                        self.__activity_service.delete_activity(int(li_words[2]))
+                        activity = self.__activity_service.delete_activity(int(li_words[2]))
+                        UndoManager.register_operation(self.__activity_service, UndoHandler.DELETE_ACTIVITY, activity)
                 elif li_words[0] == "update":
                     if li_words[1] == "person":
                         id_person = int(li_words[2])
                         li_info = self.format_person_update(user_command)
                         # print(li_info)
                         new_name, new_phone_number = li_info
+                        person = self.__person_service.filter_by_id(id_person)
                         self.__person_service.update_person(id_person, new_name, new_phone_number)
+                        UndoManager.register_operation(self.__person_service, UndoHandler.UPDATE_PERSON, person)
                     elif li_words[1] == "activity":
                         id_activity = li_words[2]
                         new_person_id = self.format_id_list(li_words[3])
                         new_date = li_words[4]
                         new_time = li_words[5]
                         new_description = li_words[6]
-                        self.__activity_service.update_activity(id_activity, new_person_id, new_date, new_time,
-                                                                new_description)
+                        activity = self.__activity_service.update_activity(id_activity, new_person_id,
+                                                                           new_date, new_time,new_description)
+                        UndoManager.register_operation(self.__activity_service, UndoHandler.UPDATE_ACTIVITY, activity)
                 elif li_words[0] == "search":
                     if li_words[1] == "person":
                         if li_words[2] == "name":
@@ -112,10 +123,13 @@ class Console:
                     if li_words[2] == "person":
                         person_id = input("Please type the id of the person that you want to filter by: ")
                         self.print_by_person(person_id)
+                elif li_words[0] == "undo":
+                    UndoManager.undo()
                 else:
                     print("The command you have typed is of incorrect form.")
             except Exception as ex:
                 print("Error, " + str(ex))
+                traceback.print_exc()
 
     def print_all_persons(self):
         print(green + "The list of persons is:\nFormat: *id*.) *name*; *phone number*" + default)
@@ -159,8 +173,10 @@ class Console:
               "14.) " + blue + "filter activities date" + default + " - Displays all activities happening at a certain"
                                                                " date, in order of their start time\n"
               "15.) " + blue + "filter activities person" + default + " - Displays all activities that the person"
-                                                                      " with the specified id performs.\n"     
-              "16.) " + red + "exit" + default)
+                                                                      " with the specified id performs.\n"
+              "16.) " + blue + "undo" + default + " - Undo the previous operation.\n"
+              "17.) " + blue + "redo" + default + " - Redo the previously undone operation.\n"
+              "18.) " + red + "exit" + default)
 
     @staticmethod
     def format_input(input_str):
