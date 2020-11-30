@@ -110,16 +110,20 @@ class Test(unittest.TestCase):
     # Update functionality
     def test_update_activity(self):
         self.activity_service.add_activity([6, 7, 8], "2/2/2020", "12:20", "Python")
-        a2 = Activity([6, 7], "1/1/2001", "11:10", "Fotbal")
-        self.activity_service.update_activity(6, [6, 7], "1/1/2001", "11:10", "Fotbal")
+        self.li_activities = self.activity_service.get_all_activities()
+        index = len(self.li_activities) - 1
+        self.activity_service.update_activity(self.li_activities[index].id, [6, 7],
+                                              "1/1/2001", "11:10", "Fotbal")
 
         self.li_activities = self.activity_service.get_all_activities()
 
-        self.assertEqual(self.li_activities[4].id, 6)
-        self.assertEqual(self.li_activities[4].date, a2.date)
-        self.assertEqual(self.li_activities[4].time, a2.time)
-        self.assertEqual(self.li_activities[4].person_id_list, a2.person_id_list)
-        self.assertEqual(self.li_activities[4].description, a2.description)
+        index = len(self.li_activities) - 1
+
+        self.assertEqual(self.li_activities[index].id, 20)
+        self.assertEqual(self.li_activities[index].date, "1/1/2001")
+        self.assertEqual(self.li_activities[index].time, "11:10")
+        self.assertEqual(self.li_activities[index].person_id_list, [6, 7])
+        self.assertEqual(self.li_activities[index].description, "Fotbal")
         self.assertRaises(ActivityValidatorException,
                           self.activity_service.update_activity, 50, [1], "1/1/1", "12:20-13:20", "Running")
 
@@ -181,6 +185,12 @@ class Test(unittest.TestCase):
     def test_delete_activity(self):
         self.activity_service.delete_activity(1)
         self.assertFalse(self.activity_service.activity_exists(1))
+        self.assertRaises(ActivityValidatorException, self.activity_service.delete_activity, 50)
+
+    # Add by entity
+    def test_add_activity_entity(self):
+        a = Activity([1,2,3], "1/1/1", "1:1-1:2", "a")
+        self.activity_service.add_activity_entity(a)
 
     # Entities
     def test_setters_getters(self):

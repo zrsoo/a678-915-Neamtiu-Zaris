@@ -10,7 +10,8 @@
 import re
 import traceback
 
-from service.handlers import UndoHandler
+from service.redo import RedoManager
+from service.undo_handlers import UndoHandler
 from service.undo import UndoManager
 
 #
@@ -125,6 +126,8 @@ class Console:
                         self.print_by_person(person_id)
                 elif li_words[0] == "undo":
                     UndoManager.undo()
+                elif li_words[0] == "redo":
+                    RedoManager.redo()
                 else:
                     print("The command you have typed is of incorrect form.")
             except Exception as ex:
