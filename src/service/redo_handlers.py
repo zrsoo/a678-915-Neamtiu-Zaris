@@ -1,15 +1,21 @@
 """
      Handlers module
 """
-from service.undo_handlers import delete_person_handler, add_person_handler, update_person_handler, \
-    delete_activity_handler, update_activity_handler, add_activity_handler
+
+from service.activity_service import ActivityService
+from service.person_service import PersonService
+
+
+def delete_person_handler(person_service, activity_service, person_id):
+    li_info = person_service.delete_person(person_id)
+    return activity_service, li_info
 
 
 class RedoHandler:
-    ADD_PERSON = add_person_handler
+    ADD_PERSON = PersonService.add_person_entity
     DELETE_PERSON = delete_person_handler
-    UPDATE_PERSON = update_person_handler
+    UPDATE_PERSON = PersonService.update_person
 
-    ADD_ACTIVITY = add_activity_handler
-    DELETE_ACTIVITY = delete_activity_handler
-    UPDATE_ACTIVITY = update_activity_handler
+    ADD_ACTIVITY = ActivityService.add_activity_entity
+    DELETE_ACTIVITY = ActivityService.delete_activity
+    UPDATE_ACTIVITY = ActivityService.update_activity

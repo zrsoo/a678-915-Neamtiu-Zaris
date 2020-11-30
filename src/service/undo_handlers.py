@@ -7,7 +7,9 @@
 
 
 def add_person_handler(person_service, person_id):
+    person = person_service.filter_by_id(person_id)
     person_service.delete_person(person_id)
+    return person
 
 
 def delete_person_handler(person_service, activity_service, li_info):
@@ -23,10 +25,12 @@ def delete_person_handler(person_service, activity_service, li_info):
         else:
             activity_service.update_activity(activity.id, activity.person_id_list, activity.date,
                                              activity.time, activity.description)
+    return activity_service, person.id
 
 
 def update_person_handler(person_service, person):
-    person_service.update_person(person.id, person.name, person.phone_number)
+    person_return = person_service.update_person(person.id, person.name, person.phone_number)
+    return person.id, person_return.name, person_return.phone_number
 
 
 #
@@ -36,16 +40,20 @@ def update_person_handler(person_service, person):
 
 
 def add_activity_handler(activity_service, activity_id):
+    activity = activity_service.filter_by_id(activity_id)
     activity_service.delete_activity(activity_id)
+    return activity
 
 
 def delete_activity_handler(activity_service, activity):
     activity_service.add_activity_entity(activity)
+    return activity.id
 
 
 def update_activity_handler(activity_service, activity):
-    activity_service.update_activity(activity.id, activity.person_id_list, activity.date, activity.time,
-                                     activity.description)
+    activity_old = activity_service.update_activity(activity.id, activity.person_id_list, activity.date, activity.time,
+                                                    activity.description)
+    return activity.id, activity_old.person_id_list, activity_old.date, activity_old.time, activity_old.description
 
 
 #

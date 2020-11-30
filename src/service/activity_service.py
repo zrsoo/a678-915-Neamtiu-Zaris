@@ -36,6 +36,7 @@ class ActivityService:
         self.__validator.validate(a)
         self.validate_activity(a)
         self.__activity_repository.save(a)
+        return a.id
 
     def delete_activity(self, activity_id):
         """
@@ -253,6 +254,9 @@ class ActivityService:
         # 11:20 <-> 10:10-11:20
         # 11:20 <-> 11:19-11:21
 
+        # print(time)
+        # print(interval)
+
         li_time = [int(word) for word in time.split(':')]  # li_time[0] = 11, li_time[1] = 20
 
         li_interval = interval.split('-')  # li_interval[0] = 10:10, li_interval[1] = 15:40
@@ -282,3 +286,6 @@ class ActivityService:
             return True
 
         return False
+
+    def filter_by_id(self, activity_id):
+        return self.__activity_repository.find_by_id(activity_id)

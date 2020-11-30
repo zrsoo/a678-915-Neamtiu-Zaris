@@ -42,6 +42,7 @@ class PersonService:
     def add_person_entity(self, p):
         self.__validator.validate(p)
         self.__person_repository.save(p)
+        return p.id
 
     def delete_person(self, person_id):
         """
@@ -84,10 +85,12 @@ class PersonService:
         if not self.person_exists(person_id):
             raise PersonServiceException("The person that you are trying to update does not exist.")
 
+        person_old = self.__person_repository.find_by_id(person_id)
         person_update = Person(name, phone_number)
         person_update.id = person_id
         self.__validator.validate(person_update)
         self.__person_repository.update(person_id, person_update)
+        return person_old
 
     def get_all_persons(self):
         """

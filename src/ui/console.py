@@ -10,9 +10,8 @@
 import re
 import traceback
 
-from service.redo import RedoManager
 from service.undo_handlers import UndoHandler
-from service.undo import UndoManager
+from service.undo_redo import CommandManager
 
 #
 
@@ -59,14 +58,14 @@ class Console:
                             name = li_info
                             phone_number = "unknown"
                         p_id = self.__person_service.add_person(name, phone_number)
-                        UndoManager.register_operation(self.__person_service, UndoHandler.ADD_PERSON, p_id)
+                        CommandManager.register_undo_operation(self.__person_service, UndoHandler.ADD_PERSON, p_id)
                     if li_words[1] == "activity":
                         person_id = self.format_id_list(li_words[2])
                         date = li_words[3]
                         time = li_words[4]
                         description = li_words[5]
                         activity_id = self.__activity_service.add_activity(person_id, date, time, description)
-                        UndoManager.register_operation(self.__activity_service, UndoHandler.ADD_ACTIVITY, activity_id)
+                        CommandManager.register_undo_operation(self.__activity_service, UndoHandler.ADD_ACTIVITY, activity_id)
                 elif li_words[0] == "list":
                     if li_words[1] == "persons":
                         self.print_all_persons()
@@ -78,20 +77,19 @@ class Console:
                 elif li_words[0] == "remove":
                     if li_words[1] == "person":
                         li_info = self.__person_service.delete_person(int(li_words[2]))
-                        UndoManager.register_operation(self.__person_service, UndoHandler.DELETE_PERSON,
-                                                       self.__activity_service, li_info)
+                        CommandManager.register_undo_operation(self.__person_service, UndoHandler.DELETE_PERSON,
+                                                          self.__activity_service, li_info)
                     elif li_words[1] == "activity":
                         activity = self.__activity_service.delete_activity(int(li_words[2]))
-                        UndoManager.register_operation(self.__activity_service, UndoHandler.DELETE_ACTIVITY, activity)
+                        CommandManager.register_undo_operation(self.__activity_service, UndoHandler.DELETE_ACTIVITY, activity)
                 elif li_words[0] == "update":
                     if li_words[1] == "person":
                         id_person = int(li_words[2])
                         li_info = self.format_person_update(user_command)
                         # print(li_info)
                         new_name, new_phone_number = li_info
-                        person = self.__person_service.filter_by_id(id_person)
-                        self.__person_service.update_person(id_person, new_name, new_phone_number)
-                        UndoManager.register_operation(self.__person_service, UndoHandler.UPDATE_PERSON, person)
+                        person = self.__person_service.update_person(id_person, new_name, new_phone_number)
+                        CommandManager.register_undo_operation(self.__person_service, UndoHandler.UPDATE_PERSON, person)
                     elif li_words[1] == "activity":
                         id_activity = li_words[2]
                         new_person_id = self.format_id_list(li_words[3])
@@ -100,7 +98,7 @@ class Console:
                         new_description = li_words[6]
                         activity = self.__activity_service.update_activity(id_activity, new_person_id,
                                                                            new_date, new_time,new_description)
-                        UndoManager.register_operation(self.__activity_service, UndoHandler.UPDATE_ACTIVITY, activity)
+                        CommandManager.register_undo_operation(self.__activity_service, UndoHandler.UPDATE_ACTIVITY, activity)
                 elif li_words[0] == "search":
                     if li_words[1] == "person":
                         if li_words[2] == "name":
@@ -125,14 +123,14 @@ class Console:
                         person_id = input("Please type the id of the person that you want to filter by: ")
                         self.print_by_person(person_id)
                 elif li_words[0] == "undo":
-                    UndoManager.undo()
+                    CommandManager.undo()
                 elif li_words[0] == "redo":
-                    RedoManager.redo()
+                    CommandManager.redo()
                 else:
                     print("The command you have typed is of incorrect form.")
             except Exception as ex:
                 print("Error, " + str(ex))
-                traceback.print_exc()
+                # traceback.print_exc()
 
     def print_all_persons(self):
         print(green + "The list of persons is:\nFormat: *id*.) *name*; *phone number*" + default)

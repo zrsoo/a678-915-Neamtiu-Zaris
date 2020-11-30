@@ -76,4 +76,4 @@ if __name__ == "__main__":
         console.run_console()
     except Exception as ex:
         print("Error, " + str(ex))
-        traceback.print_exc()
+        # traceback.print_exc()
